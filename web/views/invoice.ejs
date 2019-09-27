@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Gentelella Alela! | </title>
+
+  <!-- Bootstrap -->
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Custom styling plus plugins -->
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+  <div class="container body">
+    <div class="main_container">
+      <div class="col-md-3 left_col">
+        <div class="left_col scroll-view">
+
+
+          <!-- menu profile quick info -->
+          <% include partials/left_user_prodile.ejs %>
+          <!-- /menu profile quick info -->
+
+          <br />
+
+          <!-- sidebar menu -->
+          <% include partials/left_menu.ejs %>
+          <!-- /sidebar menu -->
+
+          <!-- /menu footer buttons -->
+          <% include partials/left_buttom_menu.ejs %>
+          <!-- /menu footer buttons -->
+        </div>
+      </div>
+
+      <!-- top navigation -->
+      <% include partials/right_menu.ejs %>
+      <!-- /top navigation -->
+
+      <!-- page content -->
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+              <h3> <small> </small></h3>
+            </div>
+
+            <div class="title_right">
+              <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search for...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="clearfix"></div> -->
+
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Invoice <small> </small></h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <section class="content invoice">
+                    <!-- title row -->
+                    <div class="row">
+                      <div class="col-xs-12 invoice-header">
+                        <h1>
+                          <i class="fa fa-globe"></i> Invoice.
+                          <small class="pull-right">Date: <%= item[0].invoice_date.toDateString() %></small>
+                        </h1>
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                      <div class="col-sm-4 invoice-col">
+                        From
+                        <address> <br>
+                          <strong><%= item[0].poi_name %></strong>
+                          <br>Phone: <%= item[0].poi_phone %>
+                        </address>
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-4 invoice-col">
+                        To
+                        <address> <br>
+                          <strong>Phone: <%= item[0].inv_creator %></strong>
+                          <!-- <br> Phone: 01923-9876 -->
+                        </address>
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-4 invoice-col">
+                        <b>Invoice #<%= item[0].invoice_no %></b> 
+                        <br>
+                        <br>
+                        <b>Type: Sales</b> 4F3S8J
+                        <br>
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <!-- Table row -->
+                    <div class="row" style="padding-top: 30px">
+                      <div class="col-xs-12 table">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>No</th>
+                              <th style="width: 15%">Name</th>
+                              <th>Lot Number</th>
+                              <th>Qty</th>
+                              <th>Per Rate</th>
+                              <th>Price</th>
+                              <th>Discount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% let totalProduct = 0; %>
+                              <% for(let i = 0;  i< child_item.length ;  i++) { %>
+                            <tr>
+                                <td><%= i+1 %></td>
+                                <td><%= child_item[i].product_id %></td>
+                                <td><%= child_item[i].lot_number %></td>
+                                <td><%= child_item[i].quantity %></td>
+                                <td><%= child_item[i].per_rate %></td>
+                                <td><%= child_item[i].price %></td>
+                                <td><%= child_item[i].discount %></td>
+                                <%  totalProduct += child_item[i].quantity  ; %>
+                            </tr>
+                            <% } %>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <div class="row">
+                      <!-- accepted payments column -->
+                      <div class="col-xs-6">
+                        <p class="lead">Summary:</p>
+
+                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                          Total Item: <%= child_item.length %> <br>
+                          Total Qty: <%= totalProduct %> product
+                        </p>
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-xs-6">
+                        <p class="lead">Invoice Payment</p>
+                        <div class="table-responsive">
+                          <table class="table">
+                            <tbody>
+                              <tr>
+                                <th style="width:50%">Sub Total:</th>
+                                <td><%= item[0].sub_total %></td>
+                              </tr>
+                              <tr>
+                                <th>Discount </th>
+                                <td><%= item[0].discount %></td>
+                              </tr>
+                              <tr>
+                                <th>Net Total:</th>
+                                <td><%= item[0].net_total %></td>
+                              </tr>
+                              <tr>
+                                <th>Paid</th>
+                                <td><%= item[0].paid %></td>
+                              </tr>
+                              <tr>
+                                <th>Due</th>
+                                <td><%= item[0].due %></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <!-- this row will not appear when printing -->
+                    <div class="row no-print">
+                      <div class="col-xs-12">
+                        <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i>
+                          Print</button>
+                        <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i
+                            class="fa fa-download"></i> Generate PDF</button>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /page content -->
+
+      <!-- footer content -->
+      <% include partials/footer.ejs %>
+      <!-- /footer content -->
+    </div>
+  </div>
+
+  <!-- jQuery -->
+  <script src="../vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- FastClick -->
+  <script src="../vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="../vendors/nprogress/nprogress.js"></script>
+
+  <!-- Custom Theme Scripts -->
+  <script src="../build/js/custom.min.js"></script>
+</body>
+
+</html>
